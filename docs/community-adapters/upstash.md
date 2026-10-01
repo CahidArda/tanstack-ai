@@ -201,8 +201,9 @@ export const stream = chat({
 })
 ```
 
-Memory is per user across threads by default. Set `scopeBy: 'thread'` to keep it per
-conversation. `tenantId` and `namespace` always partition.
+Memory is per user across threads by default, or per thread when the scope has no `userId`.
+Set `scopeBy: 'thread'` to keep it per conversation. `tenantId` and `namespace` always
+partition.
 
 | Option | Default | Purpose |
 | --- | --- | --- |
