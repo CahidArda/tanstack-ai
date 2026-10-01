@@ -284,7 +284,10 @@ happened, and return the stored record. Pass every key the script touches in
 `KEYS`, so it also works on a cluster. That one script is `createOrResume`
 and `interrupts.create` (invariants 3 and 6), and it stays correct across
 instances. `interrupts.commitBatch` is one script too: check every id exists
-and is pending, then write them all, or write nothing. `ZRANGE` on the index
+and is pending, then write them all, or write nothing. If `listReclaimable`
+reads a sorted set of detached runs, the `runs.update` that changes `status` or
+`detachedSince` must move the run in or out of it in the same script; as two
+commands, a crash between them hides a detached run from the reaper. `ZRANGE` on the index
 gives the `requestedAt` ordering for free. For `metadata`, build the key so
 `('a:b','c')` and `('a','b:c')` stay distinct, for example by escaping the
 delimiter. `@upstash/agentkit-tanstack-ai` (`upstashPersistence()`) is a
